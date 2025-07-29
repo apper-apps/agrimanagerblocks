@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-
 const FieldCard = ({ field, onEdit, onDelete, className }) => {
+  const [crops, setCrops] = useState([]);
+  const [loadingCrops, setLoadingCrops] = useState(true);
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -12,19 +14,52 @@ const FieldCard = ({ field, onEdit, onDelete, className }) => {
     });
   };
 
+  const loadFieldCrops = async () => {
+    try {
+      setLoadingCrops(true);
+      const cropService = (await import('@/services/api/cropService')).default;
+      const allCrops = await cropService.getAll();
+      const fieldCrops = allCrops.filter(crop => crop.fieldId === field.Id);
+      setCrops(fieldCrops);
+    } catch (error) {
+      console.error('Error loading field crops:', error);
+      setCrops([]);
+    } finally {
+      setLoadingCrops(false);
+    }
+  };
+
+  useEffect(() => {
+    loadFieldCrops();
+  }, [field.Id]);
+
   const getStatusColor = (status) => {
     switch (status) {
+      case 'planted':
+        return 'bg-blue-100 text-blue-800';
+      case 'growing':
+        return 'bg-green-100 text-green-800';
+      case 'ready':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'harvested':
+        return 'bg-gray-100 text-gray-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+const getFieldStatusColor = (status) => {
+    switch (status) {
       case "active":
-        return "bg-accent-100 text-accent-800";
-      case "fallow":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-green-100 text-green-800";
       case "maintenance":
-        return "bg-gray-100 text-gray-800";
+        return "bg-yellow-100 text-yellow-800";
+      case "fallow":
+        return "bg-orange-100 text-orange-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
   };
-
   return (
     <div className={cn("field-card", className)}>
       <div className="flex items-start justify-between mb-4">
@@ -39,9 +74,9 @@ const FieldCard = ({ field, onEdit, onDelete, className }) => {
             <p className="text-sm text-gray-600">{field.location}</p>
           </div>
         </div>
-        <span className={cn(
+<span className={cn(
           "px-2 py-1 rounded-full text-xs font-medium capitalize",
-          getStatusColor(field.status)
+          getFieldStatusColor(field.status)
         )}>
           {field.status}
         </span>
@@ -57,7 +92,52 @@ const FieldCard = ({ field, onEdit, onDelete, className }) => {
           <span>Added {formatDate(field.createdAt)}</span>
         </div>
       </div>
-      
+{/* Assigned Crops Section */}
+      <div className="mt-4 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="text-sm font-medium text-gray-900">
+            Assigned Crops ({crops.length})
+          </h4>
+          <ApperIcon name="Wheat" className="w-4 h-4 text-primary-500" />
+        </div>
+        
+        {loadingCrops ? (
+          <div className="text-sm text-gray-500">Loading crops...</div>
+        ) : crops.length > 0 ? (
+          <div className="space-y-2">
+            {crops.slice(0, 2).map((crop) => (
+              <div key={crop.Id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-900">
+                      {crop.name}
+                    </span>
+                    <span className={cn(
+                      "px-2 py-1 rounded-full text-xs font-medium capitalize",
+                      getStatusColor(crop.status)
+                    )}>
+                      {crop.status}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {crop.variety} • Planted {formatDate(crop.plantingDate)}
+                  </div>
+                </div>
+              </div>
+            ))}
+            {crops.length > 2 && (
+              <div className="text-xs text-gray-500 text-center">
+                +{crops.length - 2} more crops
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="text-sm text-gray-500 italic">
+            No crops assigned to this field
+          </div>
+        )}
+      </div>
+
       <div className="flex justify-end space-x-2 pt-4 border-t border-gray-100">
         <Button
           variant="ghost"

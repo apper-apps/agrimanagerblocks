@@ -29,6 +29,8 @@ async create(cropData) {
     const newCrop = {
       Id: maxId + 1,
       ...cropData,
+      fieldId: parseInt(cropData.fieldId),
+      fieldName: cropData.fieldName || "",
       plantingDate: cropData.plantingDate || new Date().toISOString(),
       status: cropData.status || "planted"
     };
@@ -42,7 +44,12 @@ async update(id, cropData) {
     if (index === -1) {
       throw new Error("Crop not found");
     }
-    const updatedCrop = { ...this.crops[index], ...cropData };
+    const updatedCrop = { 
+      ...this.crops[index], 
+      ...cropData,
+      fieldId: cropData.fieldId ? parseInt(cropData.fieldId) : this.crops[index].fieldId,
+      fieldName: cropData.fieldName || this.crops[index].fieldName
+    };
     this.crops[index] = updatedCrop;
     return { ...updatedCrop };
   }
