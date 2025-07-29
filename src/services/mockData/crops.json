@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "name": "Corn",
+    "fieldId": 1,
+    "fieldName": "North Field",
+    "plantingDate": "2024-04-15T06:00:00Z",
+    "status": "growing",
+    "estimatedHarvest": "2024-09-15T18:00:00Z"
+  },
+  {
+    "Id": 2,
+    "name": "Soybeans",
+    "fieldId": 2,
+    "fieldName": "South Field",
+    "plantingDate": "2024-05-01T07:30:00Z",
+    "status": "growing",
+    "estimatedHarvest": "2024-10-01T17:00:00Z"
+  },
+  {
+    "Id": 3,
+    "name": "Wheat",
+    "fieldId": 5,
+    "fieldName": "River Bottom",
+    "plantingDate": "2024-03-20T08:15:00Z",
+    "status": "ready",
+    "estimatedHarvest": "2024-07-20T19:00:00Z"
+  },
+  {
+    "Id": 4,
+    "name": "Barley",
+    "fieldId": 6,
+    "fieldName": "Hill Top",
+    "plantingDate": "2024-04-01T09:00:00Z",
+    "status": "growing",
+    "estimatedHarvest": "2024-08-15T18:30:00Z"
+  },
+  {
+    "Id": 5,
+    "name": "Oats",
+    "fieldId": 1,
+    "fieldName": "North Field",
+    "plantingDate": "2024-03-15T07:45:00Z",
+    "status": "harvested",
+    "estimatedHarvest": "2024-07-01T20:00:00Z"
+  }
+]
