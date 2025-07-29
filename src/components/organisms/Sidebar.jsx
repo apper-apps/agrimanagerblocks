@@ -4,10 +4,11 @@ import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const navItems = [
+const navItems = [
     { name: "Dashboard", icon: "BarChart3", path: "/" },
     { name: "Fields", icon: "MapPin", path: "/fields" },
     { name: "Crops", icon: "Wheat", path: "/crops" },
+    { name: "Planting Records", icon: "Sprout", path: "/planting-records" },
   ];
 
   const SidebarContent = () => (

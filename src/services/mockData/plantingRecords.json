@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "cropId": 1,
+    "fieldId": 1,
+    "plantingDate": "2024-03-15",
+    "seedQuantity": 50,
+    "plantingMethod": "Direct Seeding",
+    "notes": "First planting of the season"
+  },
+  {
+    "Id": 2,
+    "cropId": 2,
+    "fieldId": 2,
+    "plantingDate": "2024-03-20",
+    "seedQuantity": 75,
+    "plantingMethod": "Transplanting",
+    "notes": "Started from seedlings"
+  },
+  {
+    "Id": 3,
+    "cropId": 3,
+    "fieldId": 1,
+    "plantingDate": "2024-03-25",
+    "seedQuantity": 100,
+    "plantingMethod": "Broadcasting",
+    "notes": "Cover crop for soil health"
+  },
+  {
+    "Id": 4,
+    "cropId": 4,
+    "fieldId": 3,
+    "plantingDate": "2024-04-01",
+    "seedQuantity": 200,
+    "plantingMethod": "Row Planting",
+    "notes": "Main crop for summer season"
+  },
+  {
+    "Id": 5,
+    "cropId": 5,
+    "fieldId": 2,
+    "plantingDate": "2024-04-05",
+    "seedQuantity": 30,
+    "plantingMethod": "Hill Planting",
+    "notes": "Specialty crop for local market"
+  }
+]

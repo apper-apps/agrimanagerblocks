@@ -7,7 +7,7 @@ const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   
-  const getPageTitle = () => {
+const getPageTitle = () => {
     switch (location.pathname) {
       case "/":
         return "Dashboard";
@@ -15,6 +15,8 @@ const Layout = () => {
         return "Fields";
       case "/crops":
         return "Crops";
+      case "/planting-records":
+        return "Planting Records";
       default:
         return "AgriManager";
     }

@@ -5,16 +5,17 @@ import Layout from "@/components/organisms/Layout";
 import Dashboard from "@/components/pages/Dashboard";
 import Fields from "@/components/pages/Fields";
 import Crops from "@/components/pages/Crops";
-
+import PlantingRecords from "@/components/pages/PlantingRecords";
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Routes>
+<Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="fields" element={<Fields />} />
             <Route path="crops" element={<Crops />} />
+            <Route path="planting-records" element={<PlantingRecords />} />
           </Route>
         </Routes>
         

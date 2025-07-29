@@ -1,28 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import plantingRecordService from "@/services/api/plantingRecordService";
+import cropService from "@/services/api/cropService";
+import fieldService from "@/services/api/fieldService";
+import ApperIcon from "@/components/ApperIcon";
 import StatCard from "@/components/molecules/StatCard";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
-import fieldService from "@/services/api/fieldService";
-import cropService from "@/services/api/cropService";
+import Fields from "@/components/pages/Fields";
+import Crops from "@/components/pages/Crops";
 
 const Dashboard = () => {
-  const [fieldStats, setFieldStats] = useState({});
+const [fieldStats, setFieldStats] = useState({});
   const [cropStats, setCropStats] = useState({});
+  const [plantingStats, setPlantingStats] = useState({});
+  const [recentPlantings, setRecentPlantings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  const loadStats = async () => {
+const loadStats = async () => {
     try {
       setLoading(true);
       setError("");
       
-      const [fieldData, cropData] = await Promise.all([
+      const [fieldData, cropData, plantingData, recentData] = await Promise.all([
         fieldService.getStats(),
-        cropService.getStats()
+        cropService.getStats(),
+        plantingRecordService.getStats(),
+        plantingRecordService.getRecent(3)
       ]);
       
       setFieldStats(fieldData);
       setCropStats(cropData);
+      setPlantingStats(plantingData);
+      setRecentPlantings(recentData);
     } catch (err) {
       setError("Failed to load dashboard statistics. Please try again.");
     } finally {
@@ -84,7 +93,7 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <h3 className="text-lg font-semibold text-gray-900 font-display mb-4">
             Field Summary
@@ -132,6 +141,89 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h3 className="text-lg font-semibold text-gray-900 font-display mb-4">
+            Planting Summary
+          </h3>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Total Records</span>
+              <span className="font-semibold text-gray-900">{plantingStats.totalRecords || 0}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">This Month</span>
+              <span className="font-semibold text-accent-600">{plantingStats.thisMonthRecords || 0}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Unique Crops</span>
+              <span className="font-semibold text-primary-600">{plantingStats.uniqueCrops || 0}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Fields Used</span>
+              <span className="font-semibold text-earth-600">{plantingStats.uniqueFields || 0}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Planting Activities */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-gray-900 font-display">
+            Recent Planting Activities
+          </h3>
+          <button
+            onClick={() => window.location.href = '/planting-records'}
+            className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors"
+          >
+            View All
+          </button>
+        </div>
+        
+        {recentPlantings.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="text-gray-400 mb-2">
+              <ApperIcon name="Sprout" size={48} className="mx-auto" />
+            </div>
+            <p className="text-gray-600 mb-4">No planting records yet</p>
+            <button
+              onClick={() => window.location.href = '/planting-records'}
+              className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors"
+            >
+              Add Your First Planting Record
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {recentPlantings.map((planting) => (
+              <div
+                key={planting.Id}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                    <ApperIcon name="Sprout" size={20} className="text-primary-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{planting.cropName}</p>
+                    <p className="text-sm text-gray-600">
+                      {planting.fieldName} • {planting.plantingMethod}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-900">
+                    {planting.seedQuantity} units
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {new Date(planting.plantingDate).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
