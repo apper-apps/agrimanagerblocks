@@ -11,6 +11,7 @@ const navItems = [
     { name: "Planting Records", icon: "Sprout", path: "/planting-records" },
     { name: "Fertilizer Management", icon: "Zap", path: "/fertilizer" },
     { name: "Pest Monitoring", icon: "Shield", path: "/pest-monitoring" },
+    { name: "Financial Management", icon: "DollarSign", path: "/financial" },
   ];
 
   const SidebarContent = () => (

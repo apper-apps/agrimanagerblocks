@@ -8,6 +8,7 @@ import Crops from "@/components/pages/Crops";
 import PlantingRecords from "@/components/pages/PlantingRecords";
 import FertilizerManagement from "@/components/pages/FertilizerManagement";
 import PestMonitoring from "@/components/pages/PestMonitoring";
+import FinancialManagement from "@/components/pages/FinancialManagement";
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,7 @@ function App() {
             <Route path="planting-records" element={<PlantingRecords />} />
             <Route path="fertilizer" element={<FertilizerManagement />} />
             <Route path="pest-monitoring" element={<PestMonitoring />} />
+            <Route path="financial" element={<FinancialManagement />} />
           </Route>
         </Routes>
         

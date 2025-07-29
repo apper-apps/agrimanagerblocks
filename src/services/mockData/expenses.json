@@ -1,0 +1,66 @@
+[
+  {
+    "Id": 1,
+    "fieldId": 1,
+    "cropId": 1,
+    "category": "Seeds",
+    "description": "Wheat seeds for spring planting",
+    "amount": 450.00,
+    "quantity": 50,
+    "unit": "kg",
+    "pricePerUnit": 9.00,
+    "date": "2024-03-15T00:00:00.000Z",
+    "supplier": "AgriSeeds Co.",
+    "notes": "High-yield winter wheat variety"
+  },
+  {
+    "Id": 2,
+    "fieldId": 2,
+    "cropId": 2,
+    "category": "Fertilizer",
+    "description": "NPK 15-15-15 fertilizer",
+    "amount": 280.00,
+    "quantity": 100,
+    "unit": "kg",
+    "pricePerUnit": 2.80,
+    "date": "2024-03-20T00:00:00.000Z",
+    "supplier": "FarmTech Supplies",
+    "notes": "For corn field preparation"
+  },
+  {
+    "Id": 3,
+    "fieldId": 1,
+    "category": "Equipment",
+    "description": "Tractor maintenance and repair",
+    "amount": 850.00,
+    "date": "2024-03-25T00:00:00.000Z",
+    "supplier": "Johnson Equipment",
+    "notes": "Annual maintenance service"
+  },
+  {
+    "Id": 4,
+    "fieldId": 3,
+    "cropId": 3,
+    "category": "Labor",
+    "description": "Seasonal workers for planting",
+    "amount": 600.00,
+    "quantity": 24,
+    "unit": "hours",
+    "pricePerUnit": 25.00,
+    "date": "2024-04-01T00:00:00.000Z",
+    "notes": "3 workers for 8 hours"
+  },
+  {
+    "Id": 5,
+    "fieldId": 2,
+    "category": "Fuel",
+    "description": "Diesel fuel for farming operations",
+    "amount": 320.00,
+    "quantity": 200,
+    "unit": "liters",
+    "pricePerUnit": 1.60,
+    "date": "2024-04-05T00:00:00.000Z",
+    "supplier": "Rural Fuel Station",
+    "notes": "Monthly fuel purchase"
+  }
+]

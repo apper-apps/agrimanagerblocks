@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import plantingRecordService from "@/services/api/plantingRecordService";
 import cropService from "@/services/api/cropService";
 import fieldService from "@/services/api/fieldService";
+import financialService from "@/services/api/financialService";
 import ApperIcon from "@/components/ApperIcon";
 import StatCard from "@/components/molecules/StatCard";
 import Loading from "@/components/ui/Loading";
@@ -13,6 +14,7 @@ const Dashboard = () => {
 const [fieldStats, setFieldStats] = useState({});
   const [cropStats, setCropStats] = useState({});
   const [plantingStats, setPlantingStats] = useState({});
+  const [financialStats, setFinancialStats] = useState({});
   const [recentPlantings, setRecentPlantings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -21,16 +23,18 @@ const loadStats = async () => {
       setLoading(true);
       setError("");
       
-      const [fieldData, cropData, plantingData, recentData] = await Promise.all([
+      const [fieldData, cropData, plantingData, financialData, recentData] = await Promise.all([
         fieldService.getStats(),
         cropService.getStats(),
         plantingRecordService.getStats(),
+        financialService.getStats(),
         plantingRecordService.getRecent(3)
       ]);
       
       setFieldStats(fieldData);
       setCropStats(cropData);
       setPlantingStats(plantingData);
+      setFinancialStats(financialData);
       setRecentPlantings(recentData);
     } catch (err) {
       setError("Failed to load dashboard statistics. Please try again.");
@@ -223,7 +227,37 @@ const loadStats = async () => {
               </div>
             ))}
           </div>
-        )}
+)}
+
+        {/* Financial Overview */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+              <ApperIcon name="DollarSign" className="w-5 h-5 mr-2 text-green-600" />
+              Financial Overview
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <StatCard
+              title="Total Expenses"
+              value={`$${financialStats.totalExpenses?.toLocaleString() || '0'}`}
+              icon="TrendingDown"
+              className="text-red-600"
+            />
+            <StatCard
+              title="Total Income"
+              value={`$${financialStats.totalIncome?.toLocaleString() || '0'}`}
+              icon="TrendingUp"
+              className="text-green-600"
+            />
+            <StatCard
+              title="Net Profit"
+              value={`$${financialStats.netProfit?.toLocaleString() || '0'}`}
+              icon={financialStats.netProfit >= 0 ? "TrendingUp" : "TrendingDown"}
+              className={financialStats.netProfit >= 0 ? "text-green-600" : "text-red-600"}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

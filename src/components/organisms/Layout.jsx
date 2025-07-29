@@ -17,6 +17,12 @@ const getPageTitle = () => {
         return "Crops";
       case "/planting-records":
         return "Planting Records";
+      case "/fertilizer":
+        return "Fertilizer Management";
+      case "/pest-monitoring":
+        return "Pest Monitoring";
+      case "/financial":
+        return "Financial Management";
       default:
         return "AgriManager";
     }

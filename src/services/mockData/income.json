@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 1,
+    "fieldId": 1,
+    "cropId": 1,
+    "cropName": "Wheat",
+    "description": "Wheat harvest sale",
+    "amount": 2400.00,
+    "quantity": 1200,
+    "unit": "kg",
+    "pricePerUnit": 2.00,
+    "date": "2024-08-15T00:00:00.000Z",
+    "buyer": "Regional Grain Cooperative",
+    "notes": "Premium quality wheat"
+  },
+  {
+    "Id": 2,
+    "fieldId": 2,
+    "cropId": 2,
+    "cropName": "Corn",
+    "description": "Corn harvest sale",
+    "amount": 3200.00,
+    "quantity": 800,
+    "unit": "kg",
+    "pricePerUnit": 4.00,
+    "date": "2024-09-10T00:00:00.000Z",
+    "buyer": "Local Feed Mill",
+    "notes": "High moisture content corn"
+  },
+  {
+    "Id": 3,
+    "fieldId": 3,
+    "cropId": 3,
+    "cropName": "Soybeans",
+    "description": "Soybean harvest sale",
+    "amount": 1800.00,
+    "quantity": 600,
+    "unit": "kg",
+    "pricePerUnit": 3.00,
+    "date": "2024-09-25T00:00:00.000Z",
+    "buyer": "Soybean Processing Plant",
+    "notes": "Organic certified soybeans"
+  }
+]
