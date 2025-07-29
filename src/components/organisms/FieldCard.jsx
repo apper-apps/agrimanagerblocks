@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { cn } from "@/utils/cn";
+import React, { useEffect, useState } from "react";
+import AddIrrigationModal from "@/components/organisms/AddIrrigationModal";
+import IrrigationHistoryModal from "@/components/organisms/IrrigationHistoryModal";
 import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import Crops from "@/components/pages/Crops";
 import Button from "@/components/atoms/Button";
+import { cn } from "@/utils/cn";
 const FieldCard = ({ field, onEdit, onDelete, className }) => {
-  const [crops, setCrops] = useState([]);
+const [crops, setCrops] = useState([]);
   const [loadingCrops, setLoadingCrops] = useState(true);
-
+  const [showAddIrrigation, setShowAddIrrigation] = useState(false);
+  const [showIrrigationHistory, setShowIrrigationHistory] = useState(false);
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -138,7 +143,25 @@ const getFieldStatusColor = (status) => {
         )}
       </div>
 
-      <div className="flex justify-end space-x-2 pt-4 border-t border-gray-100">
+<div className="flex justify-end space-x-2 pt-4 border-t border-gray-100">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowAddIrrigation(true)}
+          className="text-blue-600 border-blue-200 hover:bg-blue-50"
+        >
+          <ApperIcon name="Droplets" size={16} className="mr-1" />
+          Add Irrigation
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowIrrigationHistory(true)}
+          className="text-green-600 border-green-200 hover:bg-green-50"
+        >
+          <ApperIcon name="History" size={16} className="mr-1" />
+          View History
+        </Button>
         <Button
           variant="ghost"
           size="sm"
@@ -157,7 +180,22 @@ const getFieldStatusColor = (status) => {
           <ApperIcon name="Trash2" className="w-4 h-4 mr-1" />
           Delete
         </Button>
-      </div>
+</div>
+
+      <AddIrrigationModal
+        isOpen={showAddIrrigation}
+        onClose={() => setShowAddIrrigation(false)}
+        field={field}
+        onSuccess={() => {
+          // Could refresh field data here if needed
+        }}
+      />
+
+      <IrrigationHistoryModal
+        isOpen={showIrrigationHistory}
+        onClose={() => setShowIrrigationHistory(false)}
+        field={field}
+      />
     </div>
   );
 };

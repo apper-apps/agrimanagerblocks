@@ -1,4 +1,6 @@
 import fieldsData from "@/services/mockData/fields.json";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 class FieldService {
   constructor() {
@@ -53,6 +55,17 @@ class FieldService {
     }
     const deletedField = this.fields.splice(index, 1)[0];
     return { ...deletedField };
+}
+
+  async getIrrigationStats(fieldId) {
+    await this.delay();
+    // This would typically fetch irrigation stats for the field
+    // For now, return mock data structure
+    return {
+      totalIrrigations: 0,
+      totalWaterUsed: 0,
+      lastIrrigation: null
+    };
   }
 
   async getStats() {

@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "fieldId": 1,
+    "date": "2024-03-15T08:30:00Z",
+    "duration": 120,
+    "waterAmount": 850,
+    "irrigationMethod": "sprinkler",
+    "notes": "Early morning irrigation, good coverage across field",
+    "createdAt": "2024-03-15T08:30:00Z"
+  },
+  {
+    "Id": 2,
+    "fieldId": 1,
+    "date": "2024-03-22T07:45:00Z",
+    "duration": 180,
+    "waterAmount": 1200,
+    "irrigationMethod": "drip",
+    "notes": "Deep watering for root development",
+    "createdAt": "2024-03-22T07:45:00Z"
+  },
+  {
+    "Id": 3,
+    "fieldId": 2,
+    "date": "2024-03-18T06:00:00Z",
+    "duration": 90,
+    "waterAmount": 650,
+    "irrigationMethod": "flood",
+    "notes": "Quick flood irrigation after planting",
+    "createdAt": "2024-03-18T06:00:00Z"
+  },
+  {
+    "Id": 4,
+    "fieldId": 2,
+    "date": "2024-03-25T19:15:00Z",
+    "duration": 150,
+    "waterAmount": 950,
+    "irrigationMethod": "sprinkler",
+    "notes": "Evening irrigation to minimize evaporation",
+    "createdAt": "2024-03-25T19:15:00Z"
+  },
+  {
+    "Id": 5,
+    "fieldId": 3,
+    "date": "2024-03-10T09:30:00Z",
+    "duration": 240,
+    "waterAmount": 1400,
+    "irrigationMethod": "drip",
+    "notes": "Extended drip irrigation for drought preparation",
+    "createdAt": "2024-03-10T09:30:00Z"
+  },
+  {
+    "Id": 6,
+    "fieldId": 4,
+    "date": "2024-03-20T11:00:00Z",
+    "duration": 105,
+    "waterAmount": 780,
+    "irrigationMethod": "sprinkler",
+    "notes": "Mid-day irrigation due to high temperatures",
+    "createdAt": "2024-03-20T11:00:00Z"
+  },
+  {
+    "Id": 7,
+    "fieldId": 5,
+    "date": "2024-03-12T05:30:00Z",
+    "duration": 195,
+    "waterAmount": 1100,
+    "irrigationMethod": "flood",
+    "notes": "Pre-dawn flood irrigation for optimal absorption",
+    "createdAt": "2024-03-12T05:30:00Z"
+  },
+  {
+    "Id": 8,
+    "fieldId": 5,
+    "date": "2024-03-26T20:45:00Z",
+    "duration": 135,
+    "waterAmount": 820,
+    "irrigationMethod": "drip",
+    "notes": "Late evening drip to maintain soil moisture",
+    "createdAt": "2024-03-26T20:45:00Z"
+  },
+  {
+    "Id": 9,
+    "fieldId": 6,
+    "date": "2024-03-14T07:15:00Z",
+    "duration": 165,
+    "waterAmount": 990,
+    "irrigationMethod": "sprinkler",
+    "notes": "Morning sprinkler system activation",
+    "createdAt": "2024-03-14T07:15:00Z"
+  },
+  {
+    "Id": 10,
+    "fieldId": 6,
+    "date": "2024-03-28T18:30:00Z",
+    "duration": 210,
+    "waterAmount": 1250,
+    "irrigationMethod": "drip",
+    "notes": "Extended evening drip for deep root watering",
+    "createdAt": "2024-03-28T18:30:00Z"
+  }
+]
