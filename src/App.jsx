@@ -6,6 +6,7 @@ import Dashboard from "@/components/pages/Dashboard";
 import Fields from "@/components/pages/Fields";
 import Crops from "@/components/pages/Crops";
 import PlantingRecords from "@/components/pages/PlantingRecords";
+import FertilizerManagement from "@/components/pages/FertilizerManagement";
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ function App() {
             <Route path="fields" element={<Fields />} />
             <Route path="crops" element={<Crops />} />
             <Route path="planting-records" element={<PlantingRecords />} />
+            <Route path="fertilizer" element={<FertilizerManagement />} />
           </Route>
         </Routes>
         

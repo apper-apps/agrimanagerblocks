@@ -1,0 +1,28 @@
+[
+  {
+    "Id": 1,
+    "fieldId": 1,
+    "cropId": 1,
+    "fertilizerType": "Nitrogen (Urea)",
+    "applicationDate": "2024-01-15",
+    "quantityUsed": 50,
+    "unit": "kg",
+    "costPerUnit": 0.85,
+    "totalCost": 42.50,
+    "applicationMethod": "Broadcast",
+    "notes": "Pre-planting application for corn field"
+  },
+  {
+    "Id": 2,
+    "fieldId": 2,
+    "cropId": 2,
+    "fertilizerType": "NPK 10-10-10",
+    "applicationDate": "2024-02-01",
+    "quantityUsed": 75,
+    "unit": "kg",
+    "costPerUnit": 1.20,
+    "totalCost": 90.00,
+    "applicationMethod": "Side-dress",
+    "notes": "Growth stage fertilization for wheat"
+  }
+]

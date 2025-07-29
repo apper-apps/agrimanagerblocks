@@ -9,6 +9,7 @@ const navItems = [
     { name: "Fields", icon: "MapPin", path: "/fields" },
     { name: "Crops", icon: "Wheat", path: "/crops" },
     { name: "Planting Records", icon: "Sprout", path: "/planting-records" },
+    { name: "Fertilizer Management", icon: "Zap", path: "/fertilizer" },
   ];
 
   const SidebarContent = () => (

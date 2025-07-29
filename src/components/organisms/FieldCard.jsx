@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import AddIrrigationModal from "@/components/organisms/AddIrrigationModal";
 import IrrigationHistoryModal from "@/components/organisms/IrrigationHistoryModal";
+import AddFertilizerModal from "@/components/organisms/AddFertilizerModal";
+import FertilizerHistoryModal from "@/components/organisms/FertilizerHistoryModal";
 import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import Crops from "@/components/pages/Crops";
@@ -11,6 +13,8 @@ const [crops, setCrops] = useState([]);
   const [loadingCrops, setLoadingCrops] = useState(true);
   const [showAddIrrigation, setShowAddIrrigation] = useState(false);
   const [showIrrigationHistory, setShowIrrigationHistory] = useState(false);
+  const [showAddFertilizer, setShowAddFertilizer] = useState(false);
+  const [showFertilizerHistory, setShowFertilizerHistory] = useState(false);
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -143,46 +147,72 @@ const getFieldStatusColor = (status) => {
         )}
       </div>
 
-<div className="flex justify-end space-x-2 pt-4 border-t border-gray-100">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowAddIrrigation(true)}
-          className="text-blue-600 border-blue-200 hover:bg-blue-50"
-        >
-          <ApperIcon name="Droplets" size={16} className="mr-1" />
-          Add Irrigation
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowIrrigationHistory(true)}
-          className="text-green-600 border-green-200 hover:bg-green-50"
-        >
-          <ApperIcon name="History" size={16} className="mr-1" />
-          View History
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onEdit && onEdit(field)}
-          className="text-primary-600 hover:text-primary-700 hover:bg-primary-50"
-        >
-          <ApperIcon name="Edit2" className="w-4 h-4 mr-1" />
-          Edit
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onDelete && onDelete(field.Id)}
-          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-        >
-          <ApperIcon name="Trash2" className="w-4 h-4 mr-1" />
-          Delete
-        </Button>
-</div>
+<div className="space-y-3 pt-4 border-t border-gray-100">
+        <div className="flex justify-end space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAddIrrigation(true)}
+            className="text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            <ApperIcon name="Droplets" size={16} className="mr-1" />
+            Add Irrigation
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowIrrigationHistory(true)}
+            className="text-green-600 border-green-200 hover:bg-green-50"
+          >
+            <ApperIcon name="History" size={16} className="mr-1" />
+            View History
+          </Button>
+        </div>
+        
+        <div className="flex justify-end space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAddFertilizer(true)}
+            className="text-purple-600 border-purple-200 hover:bg-purple-50"
+          >
+            <ApperIcon name="Zap" size={16} className="mr-1" />
+            Add Fertilizer
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowFertilizerHistory(true)}
+            className="text-orange-600 border-orange-200 hover:bg-orange-50"
+          >
+            <ApperIcon name="Package" size={16} className="mr-1" />
+            Fertilizer History
+          </Button>
+        </div>
+        
+        <div className="flex justify-end space-x-2 pt-2 border-t border-gray-100">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onEdit && onEdit(field)}
+            className="text-primary-600 hover:text-primary-700 hover:bg-primary-50"
+          >
+            <ApperIcon name="Edit2" className="w-4 h-4 mr-1" />
+            Edit
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onDelete && onDelete(field.Id)}
+            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+          >
+            <ApperIcon name="Trash2" className="w-4 h-4 mr-1" />
+            Delete
+          </Button>
+        </div>
+      </div>
 
-      <AddIrrigationModal
+<AddIrrigationModal
         isOpen={showAddIrrigation}
         onClose={() => setShowAddIrrigation(false)}
         field={field}
@@ -194,6 +224,21 @@ const getFieldStatusColor = (status) => {
       <IrrigationHistoryModal
         isOpen={showIrrigationHistory}
         onClose={() => setShowIrrigationHistory(false)}
+        field={field}
+      />
+
+      <AddFertilizerModal
+        isOpen={showAddFertilizer}
+        onClose={() => setShowAddFertilizer(false)}
+        field={field}
+        onSuccess={() => {
+          // Could refresh field data here if needed
+        }}
+      />
+
+      <FertilizerHistoryModal
+        isOpen={showFertilizerHistory}
+        onClose={() => setShowFertilizerHistory(false)}
         field={field}
       />
     </div>
