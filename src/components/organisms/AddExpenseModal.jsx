@@ -61,9 +61,9 @@ const handleInputChange = (e) => {
       };
       
       // Auto-calculate amount if quantity and price per unit are provided
-      if (name === "quantity" || name === "pricePerUnit") {
-        const quantity = name === "quantity" ? parseFloat(value) || 0 : parseFloat(prev.quantity) || 0;
-        const pricePerUnit = name === "pricePerUnit" ? parseFloat(value) || 0 : parseFloat(prev.pricePerUnit) || 0;
+if (name === "quantity" || name === "pricePerUnit") {
+        const quantity = name === "quantity" ? parseFloat(value || "0") || 0 : parseFloat(prev.quantity || "0") || 0;
+        const pricePerUnit = name === "pricePerUnit" ? parseFloat(value || "0") || 0 : parseFloat(prev.pricePerUnit || "0") || 0;
         
         if (quantity > 0 && pricePerUnit > 0) {
           updatedData.amount = (quantity * pricePerUnit).toFixed(2);
@@ -127,15 +127,15 @@ const handleInputChange = (e) => {
   };
 
   const handleClose = () => {
-    setFormData({
+setFormData({
       fieldId: "",
       cropId: "",
       category: "",
       description: "",
-      amount: "",
-      quantity: "",
+      amount: "0.00",
+      quantity: "0",
       unit: "",
-      pricePerUnit: "",
+      pricePerUnit: "0.00",
       date: new Date().toISOString().split('T')[0],
       supplier: "",
       notes: ""
@@ -325,10 +325,10 @@ const handleInputChange = (e) => {
 label="Total Amount *"
                 error={errors.amount}
               >
-                <input
+<input
                   type="number"
                   name="amount"
-                  value={formData.amount || "0.00"}
+                  value={formData.amount}
                   onChange={handleInputChange}
                   placeholder="0.00"
                   step="0.01"
