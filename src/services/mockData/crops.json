@@ -2,6 +2,7 @@
   {
     "Id": 1,
     "name": "Corn",
+    "variety": "Pioneer P1234VT2P",
     "fieldId": 1,
     "fieldName": "North Field",
     "plantingDate": "2024-04-15T06:00:00Z",
@@ -11,6 +12,7 @@
   {
     "Id": 2,
     "name": "Soybeans",
+    "variety": "Roundup Ready 2Y",
     "fieldId": 2,
     "fieldName": "South Field",
     "plantingDate": "2024-05-01T07:30:00Z",
@@ -20,6 +22,7 @@
   {
     "Id": 3,
     "name": "Wheat",
+    "variety": "Hard Red Winter",
     "fieldId": 5,
     "fieldName": "River Bottom",
     "plantingDate": "2024-03-20T08:15:00Z",
@@ -29,6 +32,7 @@
   {
     "Id": 4,
     "name": "Barley",
+    "variety": "Hulless Spring",
     "fieldId": 6,
     "fieldName": "Hill Top",
     "plantingDate": "2024-04-01T09:00:00Z",
@@ -38,6 +42,7 @@
   {
     "Id": 5,
     "name": "Oats",
+    "variety": "White Hull-less",
     "fieldId": 1,
     "fieldName": "North Field",
     "plantingDate": "2024-03-15T07:45:00Z",

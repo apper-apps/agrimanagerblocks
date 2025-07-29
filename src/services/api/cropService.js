@@ -23,26 +23,28 @@ class CropService {
     return { ...crop };
   }
 
-  async create(cropData) {
+async create(cropData) {
     await this.delay();
     const maxId = Math.max(...this.crops.map(c => c.Id), 0);
     const newCrop = {
       Id: maxId + 1,
       ...cropData,
-      plantingDate: cropData.plantingDate || new Date().toISOString()
+      plantingDate: cropData.plantingDate || new Date().toISOString(),
+      status: cropData.status || "planted"
     };
     this.crops.push(newCrop);
     return { ...newCrop };
   }
 
-  async update(id, cropData) {
+async update(id, cropData) {
     await this.delay();
     const index = this.crops.findIndex(c => c.Id === parseInt(id));
     if (index === -1) {
       throw new Error("Crop not found");
     }
-    this.crops[index] = { ...this.crops[index], ...cropData };
-    return { ...this.crops[index] };
+    const updatedCrop = { ...this.crops[index], ...cropData };
+    this.crops[index] = updatedCrop;
+    return { ...updatedCrop };
   }
 
   async delete(id) {

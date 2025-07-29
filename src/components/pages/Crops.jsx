@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 import CropRow from "@/components/organisms/CropRow";
+import AddCropModal from "@/components/organisms/AddCropModal";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
@@ -12,7 +13,8 @@ const Crops = () => {
   const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingCrop, setEditingCrop] = useState(null);
   const loadCrops = async () => {
     try {
       setLoading(true);
@@ -30,9 +32,48 @@ const Crops = () => {
     loadCrops();
   }, []);
 
-  const handleEditCrop = (crop) => {
-    // Placeholder for edit functionality
-    toast.info("Edit crop functionality coming soon!");
+const handleEditCrop = (crop) => {
+    setEditingCrop(crop);
+    setShowAddModal(true);
+  };
+
+  const handleAddCrop = async (cropData) => {
+    try {
+      const newCrop = await cropService.create(cropData);
+      setCrops(prev => [...prev, newCrop]);
+      toast.success("Crop added successfully!");
+    } catch (error) {
+      toast.error("Failed to add crop. Please try again.");
+      console.error("Error adding crop:", error);
+    }
+  };
+
+  const handleUpdateCrop = async (id, cropData) => {
+    try {
+      const updatedCrop = await cropService.update(id, cropData);
+      setCrops(prev => prev.map(crop => 
+        crop.Id === id ? updatedCrop : crop
+      ));
+      toast.success("Crop updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update crop. Please try again.");
+      console.error("Error updating crop:", error);
+    }
+  };
+
+  const handleSaveCrop = async (cropDataOrId, cropData = null) => {
+    if (cropData) {
+      // Update existing crop
+      await handleUpdateCrop(cropDataOrId, cropData);
+    } else {
+      // Create new crop
+      await handleAddCrop(cropDataOrId);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowAddModal(false);
+    setEditingCrop(null);
   };
 
   const handleDeleteCrop = async (id) => {
@@ -57,15 +98,23 @@ const Crops = () => {
     return <Error message={error} onRetry={loadCrops} />;
   }
 
-  if (crops.length === 0) {
+if (crops.length === 0) {
     return (
-      <Empty
-        title="No crops found"
-        description="Start tracking your crops by planting your first crop in one of your fields."
-        icon="Wheat"
-        actionLabel="Add Your First Crop"
-        onAction={() => toast.info("Add crop functionality coming soon!")}
-      />
+      <>
+        <Empty
+          title="No crops found"
+          description="Start tracking your crops by planting your first crop in one of your fields."
+          icon="Wheat"
+          actionLabel="Add Your First Crop"
+          onAction={() => setShowAddModal(true)}
+        />
+        <AddCropModal
+          isOpen={showAddModal}
+          onClose={handleCloseModal}
+          onSave={handleSaveCrop}
+          editCrop={editingCrop}
+        />
+      </>
     );
   }
 
@@ -80,8 +129,8 @@ const Crops = () => {
             Track your current crops and their growth status
           </p>
         </div>
-        <Button
-          onClick={() => toast.info("Add crop functionality coming soon!")}
+<Button
+          onClick={() => setShowAddModal(true)}
           className="flex items-center"
         >
           <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
@@ -121,7 +170,14 @@ const Crops = () => {
             ))}
           </tbody>
         </table>
-      </div>
+</div>
+
+      <AddCropModal
+        isOpen={showAddModal}
+        onClose={handleCloseModal}
+        onSave={handleSaveCrop}
+        editCrop={editingCrop}
+      />
     </div>
   );
 };
