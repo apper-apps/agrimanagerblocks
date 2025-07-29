@@ -9,15 +9,15 @@ import fieldService from "@/services/api/fieldService";
 import cropService from "@/services/api/cropService";
 
 const AddExpenseModal = ({ isOpen, onClose, onSuccess }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     fieldId: "",
     cropId: "",
     category: "",
     description: "",
-    amount: "",
-    quantity: "",
+    amount: "0.00",
+    quantity: "0",
     unit: "",
-    pricePerUnit: "",
+    pricePerUnit: "0.00",
     date: new Date().toISOString().split('T')[0],
     supplier: "",
     notes: ""
@@ -50,31 +50,30 @@ const AddExpenseModal = ({ isOpen, onClose, onSuccess }) => {
     }
   };
 
-  const handleInputChange = (e) => {
+const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-
-    // Auto-calculate amount if quantity and price per unit are provided
-    if (name === "quantity" || name === "pricePerUnit") {
-      const quantity = name === "quantity" ? parseFloat(value) || 0 : parseFloat(formData.quantity) || 0;
-      const pricePerUnit = name === "pricePerUnit" ? parseFloat(value) || 0 : parseFloat(formData.pricePerUnit) || 0;
+    
+    // Consolidate all state updates into a single operation
+    setFormData(prev => {
+      const updatedData = {
+        ...prev,
+        [name]: value
+      };
       
-      if (quantity > 0 && pricePerUnit > 0) {
-        setFormData(prev => ({
-          ...prev,
-          [name]: value,
-          amount: (quantity * pricePerUnit).toFixed(2)
-        }));
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          [name]: value
-        }));
+      // Auto-calculate amount if quantity and price per unit are provided
+      if (name === "quantity" || name === "pricePerUnit") {
+        const quantity = name === "quantity" ? parseFloat(value) || 0 : parseFloat(prev.quantity) || 0;
+        const pricePerUnit = name === "pricePerUnit" ? parseFloat(value) || 0 : parseFloat(prev.pricePerUnit) || 0;
+        
+        if (quantity > 0 && pricePerUnit > 0) {
+          updatedData.amount = (quantity * pricePerUnit).toFixed(2);
+        } else if (quantity === 0 || pricePerUnit === 0) {
+          updatedData.amount = "0.00";
+        }
       }
-    }
+      
+      return updatedData;
+    });
 
     // Clear error when user starts typing
     if (errors[name]) {
@@ -323,13 +322,13 @@ const AddExpenseModal = ({ isOpen, onClose, onSuccess }) => {
               </FormField>
 
               <FormField
-                label="Total Amount *"
+label="Total Amount *"
                 error={errors.amount}
               >
                 <input
                   type="number"
                   name="amount"
-                  value={formData.amount}
+                  value={formData.amount || "0.00"}
                   onChange={handleInputChange}
                   placeholder="0.00"
                   step="0.01"
