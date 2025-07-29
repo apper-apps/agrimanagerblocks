@@ -26,13 +26,20 @@ class CropService {
 async create(cropData) {
     await this.delay();
     const maxId = Math.max(...this.crops.map(c => c.Id), 0);
+    const plantingDate = cropData.plantingDate || new Date().toISOString();
     const newCrop = {
       Id: maxId + 1,
       ...cropData,
       fieldId: parseInt(cropData.fieldId),
       fieldName: cropData.fieldName || "",
-      plantingDate: cropData.plantingDate || new Date().toISOString(),
-      status: cropData.status || "planted"
+      plantingDate,
+      status: cropData.status || "planted",
+      growthStage: "Planted",
+      stageHistory: [{
+        stage: "Planted",
+        date: plantingDate,
+        updatedAt: new Date().toISOString()
+      }]
     };
     this.crops.push(newCrop);
     return { ...newCrop };
@@ -44,12 +51,28 @@ async update(id, cropData) {
     if (index === -1) {
       throw new Error("Crop not found");
     }
-    const updatedCrop = { 
-      ...this.crops[index], 
+    
+    const existingCrop = this.crops[index];
+    let updatedCrop = { 
+      ...existingCrop, 
       ...cropData,
-      fieldId: cropData.fieldId ? parseInt(cropData.fieldId) : this.crops[index].fieldId,
-      fieldName: cropData.fieldName || this.crops[index].fieldName
+      fieldId: cropData.fieldId ? parseInt(cropData.fieldId) : existingCrop.fieldId,
+      fieldName: cropData.fieldName || existingCrop.fieldName
     };
+
+    // Handle growth stage updates
+    if (cropData.growthStage && cropData.growthStage !== existingCrop.growthStage) {
+      const stageHistory = existingCrop.stageHistory || [];
+      updatedCrop.stageHistory = [
+        ...stageHistory,
+        {
+          stage: cropData.growthStage,
+          date: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ];
+    }
+    
     this.crops[index] = updatedCrop;
     return { ...updatedCrop };
   }

@@ -4,17 +4,19 @@ import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 import CropRow from "@/components/organisms/CropRow";
 import AddCropModal from "@/components/organisms/AddCropModal";
+import GrowthStageModal from "@/components/organisms/GrowthStageModal";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import cropService from "@/services/api/cropService";
-
 const Crops = () => {
-  const [crops, setCrops] = useState([]);
+const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingCrop, setEditingCrop] = useState(null);
+  const [showStageModal, setShowStageModal] = useState(false);
+  const [stageUpdateCrop, setStageUpdateCrop] = useState(null);
   const loadCrops = async () => {
     try {
       setLoading(true);
@@ -48,7 +50,7 @@ const handleEditCrop = (crop) => {
     }
   };
 
-  const handleUpdateCrop = async (id, cropData) => {
+const handleUpdateCrop = async (id, cropData) => {
     try {
       const updatedCrop = await cropService.update(id, cropData);
       setCrops(prev => prev.map(crop => 
@@ -61,7 +63,27 @@ const handleEditCrop = (crop) => {
     }
   };
 
-  const handleSaveCrop = async (cropDataOrId, cropData = null) => {
+  const handleStageUpdate = (crop) => {
+    setStageUpdateCrop(crop);
+    setShowStageModal(true);
+  };
+
+  const handleUpdateGrowthStage = async (cropId, newStage) => {
+    try {
+      const updatedCrop = await cropService.update(cropId, { growthStage: newStage });
+      setCrops(prev => prev.map(crop => 
+        crop.Id === cropId ? updatedCrop : crop
+      ));
+      toast.success(`Growth stage updated to ${newStage}!`);
+      setShowStageModal(false);
+      setStageUpdateCrop(null);
+    } catch (error) {
+      toast.error("Failed to update growth stage. Please try again.");
+      console.error("Error updating growth stage:", error);
+    }
+  };
+
+const handleSaveCrop = async (cropDataOrId, cropData = null) => {
     if (cropData) {
       // Update existing crop
       await handleUpdateCrop(cropDataOrId, cropData);
@@ -71,9 +93,14 @@ const handleEditCrop = (crop) => {
     }
   };
 
-  const handleCloseModal = () => {
+const handleCloseModal = () => {
     setShowAddModal(false);
     setEditingCrop(null);
+  };
+
+  const handleCloseStageModal = () => {
+    setShowStageModal(false);
+    setStageUpdateCrop(null);
   };
 
   const handleDeleteCrop = async (id) => {
@@ -144,9 +171,12 @@ if (crops.length === 0) {
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Crop & Field
-              </th>
+</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Growth Stage
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Planting Date
@@ -160,23 +190,31 @@ if (crops.length === 0) {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {crops.map((crop) => (
+{crops.map((crop) => (
               <CropRow
                 key={crop.Id}
                 crop={crop}
                 onEdit={handleEditCrop}
                 onDelete={handleDeleteCrop}
+                onStageUpdate={handleStageUpdate}
               />
             ))}
           </tbody>
         </table>
 </div>
 
-      <AddCropModal
+<AddCropModal
         isOpen={showAddModal}
         onClose={handleCloseModal}
         onSave={handleSaveCrop}
         editCrop={editingCrop}
+      />
+      
+      <GrowthStageModal
+        isOpen={showStageModal}
+        onClose={handleCloseStageModal}
+        onSave={handleUpdateGrowthStage}
+        crop={stageUpdateCrop}
       />
     </div>
   );
