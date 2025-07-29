@@ -68,7 +68,7 @@ class FieldService {
     };
   }
 
-  async getStats() {
+async getStats() {
     await this.delay();
     const totalFields = this.fields.length;
     const activeFields = this.fields.filter(f => f.status === "active").length;
@@ -80,6 +80,27 @@ class FieldService {
       activeFields,
       totalAcres: Math.round(totalAcres * 10) / 10,
       fallowFields
+    };
+  }
+
+  async getPestMonitoringStats() {
+    await this.delay();
+    // Import pest monitoring service dynamically to avoid circular dependency
+    const { default: pestMonitoringService } = await import('./pestMonitoringService');
+    const observations = await pestMonitoringService.getAll();
+    
+    const totalObservations = observations.length;
+    const activeIssues = observations.filter(o => o.status === 'Active').length;
+    const resolvedIssues = observations.filter(o => o.status === 'Resolved').length;
+    const avgSeverity = observations.length > 0 
+      ? Math.round((observations.reduce((sum, o) => sum + o.severityLevel, 0) / observations.length) * 10) / 10
+      : 0;
+
+    return {
+      totalObservations,
+      activeIssues,
+      resolvedIssues,
+      avgSeverity
     };
   }
 }

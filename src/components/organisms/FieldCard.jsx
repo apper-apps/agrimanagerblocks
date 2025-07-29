@@ -3,6 +3,8 @@ import AddIrrigationModal from "@/components/organisms/AddIrrigationModal";
 import IrrigationHistoryModal from "@/components/organisms/IrrigationHistoryModal";
 import AddFertilizerModal from "@/components/organisms/AddFertilizerModal";
 import FertilizerHistoryModal from "@/components/organisms/FertilizerHistoryModal";
+import AddPestObservationModal from "@/components/organisms/AddPestObservationModal";
+import PestHistoryModal from "@/components/organisms/PestHistoryModal";
 import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import Crops from "@/components/pages/Crops";
@@ -15,6 +17,8 @@ const [crops, setCrops] = useState([]);
   const [showIrrigationHistory, setShowIrrigationHistory] = useState(false);
   const [showAddFertilizer, setShowAddFertilizer] = useState(false);
   const [showFertilizerHistory, setShowFertilizerHistory] = useState(false);
+  const [showAddPestObservation, setShowAddPestObservation] = useState(false);
+  const [showPestHistory, setShowPestHistory] = useState(false);
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -169,7 +173,7 @@ const getFieldStatusColor = (status) => {
           </Button>
         </div>
         
-        <div className="flex justify-end space-x-2">
+<div className="flex flex-wrap justify-end gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -188,8 +192,25 @@ const getFieldStatusColor = (status) => {
             <ApperIcon name="Package" size={16} className="mr-1" />
             Fertilizer History
           </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAddPestObservation(true)}
+            className="text-red-600 border-red-200 hover:bg-red-50"
+          >
+            <ApperIcon name="Shield" size={16} className="mr-1" />
+            Log Pest Issue
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowPestHistory(true)}
+            className="text-amber-600 border-amber-200 hover:bg-amber-50"
+          >
+            <ApperIcon name="Bug" size={16} className="mr-1" />
+            Pest History
+          </Button>
         </div>
-        
         <div className="flex justify-end space-x-2 pt-2 border-t border-gray-100">
           <Button
             variant="ghost"
@@ -227,7 +248,7 @@ const getFieldStatusColor = (status) => {
         field={field}
       />
 
-      <AddFertilizerModal
+<AddFertilizerModal
         isOpen={showAddFertilizer}
         onClose={() => setShowAddFertilizer(false)}
         field={field}
@@ -239,6 +260,21 @@ const getFieldStatusColor = (status) => {
       <FertilizerHistoryModal
         isOpen={showFertilizerHistory}
         onClose={() => setShowFertilizerHistory(false)}
+        field={field}
+      />
+
+      <AddPestObservationModal
+        isOpen={showAddPestObservation}
+        onClose={() => setShowAddPestObservation(false)}
+        field={field}
+        onSuccess={() => {
+          // Could refresh field data here if needed
+        }}
+      />
+
+      <PestHistoryModal
+        isOpen={showPestHistory}
+        onClose={() => setShowPestHistory(false)}
         field={field}
       />
     </div>
