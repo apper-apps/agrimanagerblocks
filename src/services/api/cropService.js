@@ -1,105 +1,213 @@
-import cropsData from "@/services/mockData/crops.json";
-
 class CropService {
   constructor() {
-    this.crops = [...cropsData];
-  }
-
-  async delay(ms = 300) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    const { ApperClient } = window.ApperSDK;
+    this.apperClient = new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
+    this.tableName = 'crop_c';
   }
 
   async getAll() {
-    await this.delay();
-    return [...this.crops];
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "name_c" } },
+          { field: { Name: "variety_c" } },
+          { field: { Name: "field_id_c" } },
+          { field: { Name: "field_name_c" } },
+          { field: { Name: "planting_date_c" } },
+          { field: { Name: "status_c" } },
+          { field: { Name: "estimated_harvest_c" } },
+          { field: { Name: "growth_stage_c" } },
+          { field: { Name: "stage_history_c" } }
+        ],
+        orderBy: [
+          { fieldName: "Id", sorttype: "DESC" }
+        ]
+      };
+
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching crops:", error?.response?.data?.message || error.message);
+      throw error;
+    }
   }
 
   async getById(id) {
-    await this.delay();
-    const crop = this.crops.find(c => c.Id === parseInt(id));
-    if (!crop) {
-      throw new Error("Crop not found");
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "name_c" } },
+          { field: { Name: "variety_c" } },
+          { field: { Name: "field_id_c" } },
+          { field: { Name: "field_name_c" } },
+          { field: { Name: "planting_date_c" } },
+          { field: { Name: "status_c" } },
+          { field: { Name: "estimated_harvest_c" } },
+          { field: { Name: "growth_stage_c" } },
+          { field: { Name: "stage_history_c" } }
+        ]
+      };
+
+      const response = await this.apperClient.getRecordById(this.tableName, parseInt(id), params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching crop with ID ${id}:`, error?.response?.data?.message || error.message);
+      throw error;
     }
-    return { ...crop };
   }
 
-async create(cropData) {
-    await this.delay();
-    const maxId = Math.max(...this.crops.map(c => c.Id), 0);
-    const plantingDate = cropData.plantingDate || new Date().toISOString();
-    const newCrop = {
-      Id: maxId + 1,
-      ...cropData,
-      fieldId: parseInt(cropData.fieldId),
-      fieldName: cropData.fieldName || "",
-      plantingDate,
-      status: cropData.status || "planted",
-      growthStage: "Planted",
-      stageHistory: [{
-        stage: "Planted",
-        date: plantingDate,
-        updatedAt: new Date().toISOString()
-      }]
-    };
-    this.crops.push(newCrop);
-    return { ...newCrop };
-  }
+  async create(cropData) {
+    try {
+      const params = {
+        records: [{
+          Name: cropData.name,
+          name_c: cropData.name,
+          variety_c: cropData.variety,
+          field_id_c: parseInt(cropData.fieldId),
+          field_name_c: cropData.fieldName,
+          planting_date_c: cropData.plantingDate,
+          status_c: cropData.status || "growing",
+          estimated_harvest_c: cropData.estimatedHarvest,
+          growth_stage_c: "Planted",
+          stage_history_c: JSON.stringify([{
+            stage: "Planted",
+            date: cropData.plantingDate,
+            updatedAt: new Date().toISOString()
+          }])
+        }]
+      };
 
-async update(id, cropData) {
-    await this.delay();
-    const index = this.crops.findIndex(c => c.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Crop not found");
-    }
-    
-    const existingCrop = this.crops[index];
-    let updatedCrop = { 
-      ...existingCrop, 
-      ...cropData,
-      fieldId: cropData.fieldId ? parseInt(cropData.fieldId) : existingCrop.fieldId,
-      fieldName: cropData.fieldName || existingCrop.fieldName
-    };
+      const response = await this.apperClient.createRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
 
-    // Handle growth stage updates
-    if (cropData.growthStage && cropData.growthStage !== existingCrop.growthStage) {
-      const stageHistory = existingCrop.stageHistory || [];
-      updatedCrop.stageHistory = [
-        ...stageHistory,
-        {
-          stage: cropData.growthStage,
-          date: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create crop ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          failedRecords.forEach(record => {
+            if (record.message) throw new Error(record.message);
+          });
         }
-      ];
+        
+        return successfulRecords[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error creating crop:", error?.response?.data?.message || error.message);
+      throw error;
     }
-    
-    this.crops[index] = updatedCrop;
-    return { ...updatedCrop };
+  }
+
+  async update(id, cropData) {
+    try {
+      const updateData = {
+        Id: parseInt(id)
+      };
+
+      if (cropData.name) updateData.name_c = cropData.name;
+      if (cropData.variety) updateData.variety_c = cropData.variety;
+      if (cropData.fieldId) updateData.field_id_c = parseInt(cropData.fieldId);
+      if (cropData.fieldName) updateData.field_name_c = cropData.fieldName;
+      if (cropData.plantingDate) updateData.planting_date_c = cropData.plantingDate;
+      if (cropData.status) updateData.status_c = cropData.status;
+      if (cropData.estimatedHarvest) updateData.estimated_harvest_c = cropData.estimatedHarvest;
+      if (cropData.growthStage) updateData.growth_stage_c = cropData.growthStage;
+
+      const params = {
+        records: [updateData]
+      };
+
+      const response = await this.apperClient.updateRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successfulUpdates = response.results.filter(result => result.success);
+        const failedUpdates = response.results.filter(result => !result.success);
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update crop ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
+          failedUpdates.forEach(record => {
+            if (record.message) throw new Error(record.message);
+          });
+        }
+        
+        return successfulUpdates[0]?.data;
+      }
+    } catch (error) {
+      console.error("Error updating crop:", error?.response?.data?.message || error.message);
+      throw error;
+    }
   }
 
   async delete(id) {
-    await this.delay();
-    const index = this.crops.findIndex(c => c.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Crop not found");
+    try {
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+
+      const response = await this.apperClient.deleteRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error deleting crop:", error?.response?.data?.message || error.message);
+      throw error;
     }
-    const deletedCrop = this.crops.splice(index, 1)[0];
-    return { ...deletedCrop };
   }
 
   async getStats() {
-    await this.delay();
-    const totalCrops = this.crops.length;
-    const activeCrops = this.crops.filter(c => c.status === "growing" || c.status === "planted").length;
-    const readyToHarvest = this.crops.filter(c => c.status === "ready").length;
-    const harvested = this.crops.filter(c => c.status === "harvested").length;
+    try {
+      const crops = await this.getAll();
+      const totalCrops = crops.length;
+      const activeCrops = crops.filter(c => c.status_c === "growing" || c.status_c === "planted").length;
+      const readyToHarvest = crops.filter(c => c.status_c === "ready").length;
+      const harvested = crops.filter(c => c.status_c === "harvested").length;
 
-    return {
-      totalCrops,
-      activeCrops,
-      readyToHarvest,
-      harvested
-    };
+      return {
+        totalCrops,
+        activeCrops,
+        readyToHarvest,
+        harvested
+      };
+    } catch (error) {
+      console.error("Error getting crop stats:", error?.response?.data?.message || error.message);
+      return {
+        totalCrops: 0,
+        activeCrops: 0,
+        readyToHarvest: 0,
+        harvested: 0
+      };
+    }
   }
 }
 

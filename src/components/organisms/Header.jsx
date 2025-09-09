@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-
+import { AuthContext } from "../../App";
 const Header = ({ title, onMenuClick, className }) => {
   return (
     <header className={cn(
@@ -25,8 +26,7 @@ const Header = ({ title, onMenuClick, className }) => {
               {title}
             </h1>
           </div>
-          
-          <div className="flex items-center space-x-4">
+<div className="flex items-center space-x-4">
             <div className="hidden sm:flex items-center text-sm text-gray-600">
               <ApperIcon name="Calendar" className="w-4 h-4 mr-2" />
               <span>{new Date().toLocaleDateString("en-US", { 
@@ -36,10 +36,42 @@ const Header = ({ title, onMenuClick, className }) => {
                 day: "numeric" 
               })}</span>
             </div>
+            <UserProfile />
           </div>
         </div>
       </div>
     </header>
+  );
+};
+
+const UserProfile = () => {
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { logout } = useContext(AuthContext);
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center space-x-3">
+      <div className="hidden sm:block text-right">
+        <div className="text-sm font-medium text-gray-900">
+          {user?.firstName} {user?.lastName}
+        </div>
+        <div className="text-xs text-gray-500">
+          {user?.emailAddress}
+        </div>
+      </div>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={logout}
+        className="flex items-center gap-1"
+      >
+        <ApperIcon name="LogOut" className="w-4 h-4" />
+        <span className="hidden sm:inline">Logout</span>
+      </Button>
+    </div>
   );
 };
 
