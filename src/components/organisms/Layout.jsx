@@ -9,7 +9,7 @@ const Layout = () => {
   
 const getPageTitle = () => {
     switch (location.pathname) {
-      case "/":
+case "/":
         return "Dashboard";
       case "/fields":
         return "Fields";
@@ -23,6 +23,8 @@ const getPageTitle = () => {
         return "Pest Monitoring";
       case "/financial":
         return "Financial Management";
+      case "/tasks":
+        return "Task Management";
       default:
         return "AgriManager";
     }

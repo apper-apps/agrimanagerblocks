@@ -2,21 +2,22 @@ import React, { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { clearUser, setUser } from "./store/userSlice";
+import { clearUser, setUser } from "@/store/userSlice";
 import Login from "@/components/pages/Login";
-import Signup from "@/components/pages/Signup";
 import Callback from "@/components/pages/Callback";
-import ErrorPage from "@/components/pages/ErrorPage";
-import ResetPassword from "@/components/pages/ResetPassword";
 import PromptPassword from "@/components/pages/PromptPassword";
-import Layout from "@/components/organisms/Layout";
-import Fields from "@/components/pages/Fields";
-import PlantingRecords from "@/components/pages/PlantingRecords";
-import PestMonitoring from "@/components/pages/PestMonitoring";
-import Dashboard from "@/components/pages/Dashboard";
-import FertilizerManagement from "@/components/pages/FertilizerManagement";
-import Crops from "@/components/pages/Crops";
 import FinancialManagement from "@/components/pages/FinancialManagement";
+import PestMonitoring from "@/components/pages/PestMonitoring";
+import FertilizerManagement from "@/components/pages/FertilizerManagement";
+import ErrorPage from "@/components/pages/ErrorPage";
+import Signup from "@/components/pages/Signup";
+import PlantingRecords from "@/components/pages/PlantingRecords";
+import ResetPassword from "@/components/pages/ResetPassword";
+import Dashboard from "@/components/pages/Dashboard";
+import Fields from "@/components/pages/Fields";
+import Crops from "@/components/pages/Crops";
+import Tasks from "@/components/pages/Tasks";
+import Layout from "@/components/organisms/Layout";
 
 // Create auth context
 export const AuthContext = createContext(null);
@@ -137,7 +138,8 @@ function AppContent() {
           <Route path="planting-records" element={<PlantingRecords />} />
           <Route path="fertilizer" element={<FertilizerManagement />} />
           <Route path="pest-monitoring" element={<PestMonitoring />} />
-          <Route path="financial" element={<FinancialManagement />} />
+<Route path="financial" element={<FinancialManagement />} />
+          <Route path="tasks" element={<Tasks />} />
         </Route>
       </Routes>
       <ToastContainer

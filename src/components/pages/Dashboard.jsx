@@ -74,7 +74,7 @@ const loadStats = async () => {
           trend="up"
           trendValue="+2 this month"
         />
-        <StatCard
+<StatCard
           title="Active Fields"
           value={fieldStats.activeFields || 0}
           icon="CheckCircle"
@@ -94,6 +94,13 @@ const loadStats = async () => {
           icon="Calendar"
           trend="up"
           trendValue="This week"
+        />
+        <StatCard
+          title="Pending Tasks"
+          value={12}
+          icon="CheckSquare"
+          trend="up"
+          trendValue="High priority"
         />
       </div>
 
