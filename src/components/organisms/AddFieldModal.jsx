@@ -15,14 +15,14 @@ const [formData, setFormData] = useState({
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     if (editField) {
-setFormData({
-        name: editField.name,
-        sizeInAcres: editField.sizeInAcres.toString(),
-        location: editField.location,
-        status: editField.status,
-        type: editField.type || "crop"
+      setFormData({
+        name: editField?.name || '',
+        sizeInAcres: editField?.sizeInAcres?.toString() || editField?.size_in_acres_c?.toString() || '',
+        location: editField?.location || '',
+        status: editField?.status || '',
+        type: editField?.type || "crop"
       });
     } else {
       setFormData({
