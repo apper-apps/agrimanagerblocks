@@ -7,7 +7,7 @@ import Loading from '@/components/ui/Loading';
 import Empty from '@/components/ui/Empty';
 import Error from '@/components/ui/Error';
 import equipmentService from '@/services/api/equipmentService';
-import { fieldService } from '@/services/api/fieldService';
+import fieldService from '@/services/api/fieldService';
 const Equipment = () => {
   const [equipment, setEquipment] = useState([]);
   const [fields, setFields] = useState([]);
