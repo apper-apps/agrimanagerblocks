@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { clearUser, setUser } from "@/store/userSlice";
 import Login from "@/components/pages/Login";
+import Tasks from "@/components/pages/Tasks";
 import Callback from "@/components/pages/Callback";
 import PromptPassword from "@/components/pages/PromptPassword";
 import FinancialManagement from "@/components/pages/FinancialManagement";
@@ -16,7 +17,7 @@ import ResetPassword from "@/components/pages/ResetPassword";
 import Dashboard from "@/components/pages/Dashboard";
 import Fields from "@/components/pages/Fields";
 import Crops from "@/components/pages/Crops";
-import Tasks from "@/components/pages/Tasks";
+import Equipment from "@/components/pages/Equipment";
 import Layout from "@/components/organisms/Layout";
 
 // Create auth context
@@ -139,6 +140,7 @@ function AppContent() {
           <Route path="fertilizer" element={<FertilizerManagement />} />
           <Route path="pest-monitoring" element={<PestMonitoring />} />
 <Route path="financial" element={<FinancialManagement />} />
+          <Route path="equipment" element={<Equipment />} />
           <Route path="tasks" element={<Tasks />} />
         </Route>
       </Routes>

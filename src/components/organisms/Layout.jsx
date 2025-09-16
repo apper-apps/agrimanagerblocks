@@ -23,8 +23,10 @@ case "/":
         return "Pest Monitoring";
       case "/financial":
         return "Financial Management";
-      case "/tasks":
+case "/tasks":
         return "Task Management";
+      case "/equipment":
+        return "Equipment Management";
       default:
         return "AgriManager";
     }
