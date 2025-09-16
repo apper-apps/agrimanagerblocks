@@ -5,6 +5,7 @@
     "sizeInAcres": 25.5,
     "location": "North Pasture, Section 1",
     "status": "active",
+    "type": "crop",
     "createdAt": "2024-01-15T08:00:00Z"
   },
   {
@@ -13,6 +14,7 @@
     "sizeInAcres": 18.2,
     "location": "South Pasture, Section 2",
     "status": "active",
+    "type": "pasture",
     "createdAt": "2024-01-20T10:30:00Z"
   },
   {
@@ -21,6 +23,7 @@
     "sizeInAcres": 32.0,
     "location": "East Pasture, Section 3",
     "status": "fallow",
+    "type": "crop",
     "createdAt": "2024-02-01T14:15:00Z"
   },
   {
@@ -29,6 +32,7 @@
     "sizeInAcres": 22.8,
     "location": "West Pasture, Section 4",
     "status": "maintenance",
+    "type": "orchard",
     "createdAt": "2024-02-10T09:45:00Z"
   },
   {
@@ -37,6 +41,7 @@
     "sizeInAcres": 15.3,
     "location": "Lower Valley, Section 5",
     "status": "active",
+    "type": "greenhouse",
     "createdAt": "2024-02-15T11:20:00Z"
   },
   {
@@ -45,6 +50,7 @@
     "sizeInAcres": 28.7,
     "location": "Upper Ridge, Section 6",
     "status": "active",
+    "type": "crop",
     "createdAt": "2024-02-20T16:00:00Z"
   }
 ]

@@ -14,9 +14,10 @@ class FieldService {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "name_c" } },
-          { field: { Name: "size_in_acres_c" } },
+{ field: { Name: "size_in_acres_c" } },
           { field: { Name: "location_c" } },
           { field: { Name: "status_c" } },
+          { field: { Name: "type_c" } },
           { field: { Name: "created_at_c" } }
         ],
         orderBy: [
@@ -44,9 +45,10 @@ class FieldService {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "name_c" } },
-          { field: { Name: "size_in_acres_c" } },
+{ field: { Name: "size_in_acres_c" } },
           { field: { Name: "location_c" } },
           { field: { Name: "status_c" } },
+          { field: { Name: "type_c" } },
           { field: { Name: "created_at_c" } }
         ]
       };
@@ -71,8 +73,9 @@ class FieldService {
         records: [{
           Name: fieldData.name,
           name_c: fieldData.name,
-          size_in_acres_c: fieldData.sizeInAcres,
+size_in_acres_c: fieldData.sizeInAcres,
           location_c: fieldData.location,
+          type_c: fieldData.type,
           status_c: fieldData.status,
           created_at_c: new Date().toISOString()
         }]
@@ -112,8 +115,9 @@ class FieldService {
           Name: fieldData.name,
           name_c: fieldData.name,
           size_in_acres_c: fieldData.sizeInAcres,
-          location_c: fieldData.location,
-          status_c: fieldData.status
+location_c: fieldData.location,
+          status_c: fieldData.status,
+          type_c: fieldData.type
         }]
       };
 

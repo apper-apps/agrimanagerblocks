@@ -5,29 +5,32 @@ import Button from "@/components/atoms/Button";
 import FormField from "@/components/molecules/FormField";
 
 const AddFieldModal = ({ isOpen, onClose, onSave, editField = null }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     name: "",
     sizeInAcres: "",
     location: "",
-    status: "active"
+    status: "active",
+    type: "crop"
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (editField) {
-      setFormData({
+setFormData({
         name: editField.name,
         sizeInAcres: editField.sizeInAcres.toString(),
         location: editField.location,
-        status: editField.status
+        status: editField.status,
+        type: editField.type || "crop"
       });
     } else {
       setFormData({
-        name: "",
+name: "",
         sizeInAcres: "",
         location: "",
-        status: "active"
+        status: "active",
+        type: "crop"
       });
     }
     setErrors({});
@@ -146,8 +149,25 @@ const AddFieldModal = ({ isOpen, onClose, onSave, editField = null }) => {
             error={errors.location}
             placeholder="e.g., North Pasture, Section 4"
             required
-          />
+/>
           
+          <FormField
+            label="Field Type"
+            type="select"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            options={[
+              { value: "crop", label: "Crop Field" },
+              { value: "pasture", label: "Pasture" },
+              { value: "orchard", label: "Orchard" },
+              { value: "greenhouse", label: "Greenhouse" },
+              { value: "storage", label: "Storage Area" },
+              { value: "other", label: "Other" }
+            ]}
+            error={errors.type}
+            required
+          />
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Status</label>
             <select
