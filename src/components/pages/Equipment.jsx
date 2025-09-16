@@ -6,7 +6,8 @@ import Input from '@/components/atoms/Input';
 import Loading from '@/components/ui/Loading';
 import Empty from '@/components/ui/Empty';
 import Error from '@/components/ui/Error';
-
+import equipmentService from '@/services/api/equipmentService';
+import { fieldService } from '@/services/api/fieldService';
 const Equipment = () => {
   const [equipment, setEquipment] = useState([]);
   const [fields, setFields] = useState([]);
@@ -19,56 +20,18 @@ const Equipment = () => {
   const [selectedEquipment, setSelectedEquipment] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Initialize ApperClient
-  const { ApperClient } = window.ApperSDK;
-  const apperClient = new ApperClient({
-    apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-    apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-  });
 
   // Fetch equipment data
-  const fetchEquipment = async () => {
+const fetchEquipment = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      const params = {
-        fields: [
-          { field: { Name: "Id" } },
-          { field: { Name: "Name" } },
-          { field: { Name: "name_c" } },
-          { field: { Name: "type_c" } },
-          { field: { Name: "purchase_date_c" } },
-          { field: { Name: "maintenance_schedule_c" } },
-          { field: { Name: "operational_status_c" } },
-          { field: { Name: "field_c" } },
-          { field: { Name: "notes_c" } },
-          { field: { Name: "description_c" } }
-        ],
-        orderBy: [
-          { fieldName: "Name", sorttype: "ASC" }
-        ]
-      };
-
-      const response = await apperClient.fetchRecords('equipment_c', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        setError(response.message);
-        setEquipment([]);
-      } else if (!response.data || response.data.length === 0) {
-        setEquipment([]);
-      } else {
-        setEquipment(response.data);
-      }
+      const data = await equipmentService.getAll();
+      setEquipment(data);
     } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error fetching equipment:", error?.response?.data?.message);
-        setError(error?.response?.data?.message);
-      } else {
-        console.error("Error fetching equipment:", error);
-        setError("Failed to load equipment data");
-      }
+      console.error("Error fetching equipment:", error?.response?.data?.message || error.message);
+      setError(error?.response?.data?.message || "Failed to load equipment data");
       setEquipment([]);
     } finally {
       setLoading(false);
@@ -76,87 +39,28 @@ const Equipment = () => {
   };
 
   // Fetch fields for lookup
-  const fetchFields = async () => {
+const fetchFields = async () => {
     try {
-      const params = {
-        fields: [
-          { field: { Name: "Id" } },
-          { field: { Name: "Name" } },
-          { field: { Name: "name_c" } }
-        ],
-        orderBy: [
-          { fieldName: "Name", sorttype: "ASC" }
-        ]
-      };
-
-      const response = await apperClient.fetchRecords('field_c', params);
-      
-      if (response.success && response.data) {
-        setFields(response.data);
-      }
+      const data = await fieldService.getAll();
+      setFields(data);
     } catch (error) {
       console.error("Error fetching fields:", error);
     }
   };
 
   // Create equipment
-  const createEquipment = async (equipmentData) => {
+const createEquipment = async (equipmentData) => {
     try {
       setSubmitting(true);
       
-      const params = {
-        records: [{
-          Name: equipmentData.name_c,
-          name_c: equipmentData.name_c,
-          type_c: equipmentData.type_c,
-          purchase_date_c: equipmentData.purchase_date_c,
-          maintenance_schedule_c: equipmentData.maintenance_schedule_c,
-          operational_status_c: equipmentData.operational_status_c,
-          field_c: equipmentData.field_c ? parseInt(equipmentData.field_c) : null,
-          notes_c: equipmentData.notes_c || '',
-          description_c: equipmentData.description_c || ''
-        }]
-      };
-
-      const response = await apperClient.createRecord('equipment_c', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return false;
-      }
-
-      if (response.results) {
-        const successfulRecords = response.results.filter(result => result.success);
-        const failedRecords = response.results.filter(result => !result.success);
-        
-        if (failedRecords.length > 0) {
-          console.error(`Failed to create equipment ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
-          
-          failedRecords.forEach(record => {
-            record.errors?.forEach(error => {
-              toast.error(`${error.fieldLabel}: ${error}`);
-            });
-            if (record.message) toast.error(record.message);
-          });
-        }
-
-        if (successfulRecords.length > 0) {
-          toast.success('Equipment created successfully');
-          fetchEquipment();
-          setIsAddModalOpen(false);
-          return true;
-        }
-      }
-      return false;
+      await equipmentService.create(equipmentData);
+      toast.success('Equipment created successfully');
+      fetchEquipment();
+      setIsAddModalOpen(false);
+      return true;
     } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error creating equipment:", error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
-      } else {
-        console.error("Error creating equipment:", error);
-        toast.error("Failed to create equipment");
-      }
+      console.error("Error creating equipment:", error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || "Failed to create equipment");
       return false;
     } finally {
       setSubmitting(false);
@@ -164,117 +68,39 @@ const Equipment = () => {
   };
 
   // Update equipment
-  const updateEquipment = async (id, equipmentData) => {
+const updateEquipment = async (id, equipmentData) => {
     try {
       setSubmitting(true);
       
-      const params = {
-        records: [{
-          Id: parseInt(id),
-          Name: equipmentData.name_c,
-          name_c: equipmentData.name_c,
-          type_c: equipmentData.type_c,
-          purchase_date_c: equipmentData.purchase_date_c,
-          maintenance_schedule_c: equipmentData.maintenance_schedule_c,
-          operational_status_c: equipmentData.operational_status_c,
-          field_c: equipmentData.field_c ? parseInt(equipmentData.field_c) : null,
-          notes_c: equipmentData.notes_c || '',
-          description_c: equipmentData.description_c || ''
-        }]
-      };
-
-      const response = await apperClient.updateRecord('equipment_c', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return false;
-      }
-
-      if (response.results) {
-        const successfulUpdates = response.results.filter(result => result.success);
-        const failedUpdates = response.results.filter(result => !result.success);
-        
-        if (failedUpdates.length > 0) {
-          console.error(`Failed to update equipment ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
-          
-          failedUpdates.forEach(record => {
-            record.errors?.forEach(error => {
-              toast.error(`${error.fieldLabel}: ${error}`);
-            });
-            if (record.message) toast.error(record.message);
-          });
-        }
-
-        if (successfulUpdates.length > 0) {
-          toast.success('Equipment updated successfully');
-          fetchEquipment();
-          setIsEditModalOpen(false);
-          setSelectedEquipment(null);
-          return true;
-        }
-      }
-      return false;
+      await equipmentService.update(id, equipmentData);
+      toast.success('Equipment updated successfully');
+      fetchEquipment();
+      setIsEditModalOpen(false);
+      setSelectedEquipment(null);
+      return true;
     } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error updating equipment:", error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
-      } else {
-        console.error("Error updating equipment:", error);
-        toast.error("Failed to update equipment");
-      }
+      console.error("Error updating equipment:", error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || "Failed to update equipment");
       return false;
     } finally {
       setSubmitting(false);
     }
   };
 
-  // Delete equipment
+// Delete equipment
   const deleteEquipment = async (id) => {
     if (!confirm('Are you sure you want to delete this equipment? This action cannot be undone.')) {
       return;
     }
 
     try {
-      const params = {
-        RecordIds: [parseInt(id)]
-      };
-
-      const response = await apperClient.deleteRecord('equipment_c', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
-        return false;
-      }
-
-      if (response.results) {
-        const successfulDeletions = response.results.filter(result => result.success);
-        const failedDeletions = response.results.filter(result => !result.success);
-        
-        if (failedDeletions.length > 0) {
-          console.error(`Failed to delete equipment ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`);
-          
-          failedDeletions.forEach(record => {
-            if (record.message) toast.error(record.message);
-          });
-        }
-
-        if (successfulDeletions.length > 0) {
-          toast.success('Equipment deleted successfully');
-          fetchEquipment();
-          return true;
-        }
-      }
-      return false;
+      await equipmentService.delete(id);
+      toast.success('Equipment deleted successfully');
+      fetchEquipment();
+      return true;
     } catch (error) {
-      if (error?.response?.data?.message) {
-        console.error("Error deleting equipment:", error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
-      } else {
-        console.error("Error deleting equipment:", error);
-        toast.error("Failed to delete equipment");
-      }
+      console.error("Error deleting equipment:", error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || "Failed to delete equipment");
       return false;
     }
   };
