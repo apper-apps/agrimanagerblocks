@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import ApperIcon from '@/components/ApperIcon';
 import Button from '@/components/atoms/Button';
-import { Input } from '@/components/atoms/Input';
+import Input from '@/components/atoms/Input';
 import Loading from '@/components/ui/Loading';
 import Empty from '@/components/ui/Empty';
 import Error from '@/components/ui/Error';
