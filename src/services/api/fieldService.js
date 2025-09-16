@@ -10,14 +10,13 @@ class FieldService {
 
   async getAll() {
     try {
-      const params = {
+const params = {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "name_c" } },
-{ field: { Name: "size_in_acres_c" } },
+          { field: { Name: "size_in_acres_c" } },
           { field: { Name: "location_c" } },
           { field: { Name: "status_c" } },
-          { field: { Name: "type_c" } },
           { field: { Name: "created_at_c" } }
         ],
         orderBy: [
@@ -42,13 +41,12 @@ class FieldService {
   async getById(id) {
     try {
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "name_c" } },
-{ field: { Name: "size_in_acres_c" } },
+          { field: { Name: "size_in_acres_c" } },
           { field: { Name: "location_c" } },
           { field: { Name: "status_c" } },
-          { field: { Name: "type_c" } },
           { field: { Name: "created_at_c" } }
         ]
       };
@@ -70,12 +68,11 @@ class FieldService {
   async create(fieldData) {
     try {
       const params = {
-        records: [{
+records: [{
           Name: fieldData.name,
           name_c: fieldData.name,
-size_in_acres_c: fieldData.sizeInAcres,
+          size_in_acres_c: parseFloat(fieldData.sizeInAcres),
           location_c: fieldData.location,
-          type_c: fieldData.type,
           status_c: fieldData.status,
           created_at_c: new Date().toISOString()
         }]
@@ -112,12 +109,11 @@ size_in_acres_c: fieldData.sizeInAcres,
       const params = {
         records: [{
           Id: parseInt(id),
-          Name: fieldData.name,
+Name: fieldData.name,
           name_c: fieldData.name,
-          size_in_acres_c: fieldData.sizeInAcres,
-location_c: fieldData.location,
-          status_c: fieldData.status,
-          type_c: fieldData.type
+          size_in_acres_c: parseFloat(fieldData.sizeInAcres),
+          location_c: fieldData.location,
+          status_c: fieldData.status
         }]
       };
 
