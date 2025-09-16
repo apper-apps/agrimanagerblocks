@@ -81,28 +81,28 @@ const getFieldStatusColor = (status) => {
             <ApperIcon name="MapPin" className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 font-display">
-              {field.name}
+<h3 className="text-lg font-semibold text-gray-900 font-display">
+              {field.name_c}
             </h3>
-            <p className="text-sm text-gray-600">{field.location}</p>
+            <p className="text-sm text-gray-600">{field.location_c}</p>
           </div>
         </div>
 <span className={cn(
           "px-2 py-1 rounded-full text-xs font-medium capitalize",
-          getFieldStatusColor(field.status)
+          getFieldStatusColor(field.status_c)
         )}>
-          {field.status}
+          {field.status_c}
         </span>
       </div>
       
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="flex items-center text-sm text-gray-600">
+<div className="flex items-center text-sm text-gray-600">
           <ApperIcon name="Maximize" className="w-4 h-4 mr-2 text-primary-500" />
-          <span>{field.sizeInAcres} acres</span>
+          <span>{field.size_in_acres_c} acres</span>
         </div>
         <div className="flex items-center text-sm text-gray-600">
           <ApperIcon name="Calendar" className="w-4 h-4 mr-2 text-primary-500" />
-          <span>Added {formatDate(field.createdAt)}</span>
+          <span>Added {formatDate(field.created_at_c)}</span>
         </div>
       </div>
 {/* Assigned Crops Section */}

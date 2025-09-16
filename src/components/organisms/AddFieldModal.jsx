@@ -17,11 +17,11 @@ const [formData, setFormData] = useState({
 
 useEffect(() => {
     if (editField) {
-      setFormData({
-        name: editField?.name || '',
-        sizeInAcres: editField?.sizeInAcres?.toString() || editField?.size_in_acres_c?.toString() || '',
-        location: editField?.location || '',
-        status: editField?.status || '',
+setFormData({
+        name: editField?.name_c || editField?.name || '',
+        sizeInAcres: editField?.size_in_acres_c?.toString() || editField?.sizeInAcres?.toString() || '',
+        location: editField?.location_c || editField?.location || '',
+        status: editField?.status_c || editField?.status || '',
         type: editField?.type || "crop"
       });
     } else {
