@@ -316,7 +316,6 @@ const EquipmentModal = ({ fields, equipment, onSubmit, onClose, submitting, titl
     maintenance_schedule_c: equipment?.maintenance_schedule_c || '',
     operational_status_c: equipment?.operational_status_c || 'operational',
     field_c: equipment?.field_c?.Id || equipment?.field_c || '',
-    notes_c: equipment?.notes_c || '',
     description_c: equipment?.description_c || ''
   });
 
@@ -341,8 +340,7 @@ const EquipmentModal = ({ fields, equipment, onSubmit, onClose, submitting, titl
         purchase_date_c: '',
         maintenance_schedule_c: '',
         operational_status_c: 'operational',
-        field_c: '',
-        notes_c: '',
+field_c: '',
         description_c: ''
       });
     }
@@ -471,19 +469,6 @@ const EquipmentModal = ({ fields, equipment, onSubmit, onClose, submitting, titl
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Notes
-            </label>
-            <textarea
-              name="notes_c"
-              value={formData.notes_c}
-              onChange={handleChange}
-              placeholder="Additional notes about the equipment"
-              rows="3"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 resize-vertical"
-            />
-          </div>
 
           <div className="flex gap-4 pt-4 border-t border-gray-200">
             <Button
